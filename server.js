@@ -12,6 +12,7 @@ const authController = require("./controllers/auth.js");
 const port = process.env.PORT ? process.env.PORT : "3000";
 const MongoStore = require("connect-mongo");
 mongoose.connect(process.env.MONGODB_URI);
+const isSignedIn = require("./middleware/is-signed-in.js");
 
 mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
@@ -43,12 +44,8 @@ app.get("/", async (req, res) => {
 
 app.use("/auth", authController);
 
-app.get("/vip-lounge", (req, res) => {
-  if (req.session.user) {
-    res.send(`Welcome to the party ${req.session.user.username}.`);
-  } else {
-    res.send("Sorry, no guests allowed.");
-  }
+app.get("/vip-lounge", isSignedIn, (req, res) => {
+  res.send(`Welcome to the party ${req.session.user.username}`);
 });
 
 app.listen(port, () => {

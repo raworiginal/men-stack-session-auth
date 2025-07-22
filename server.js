@@ -21,7 +21,11 @@ app.use(express.urlencoded({ extended: false }));
 // Middleware for using HTTP verbs such as PUT or DELETE
 app.use(methodOverride("_method"));
 // Morgan for logging HTTP requests
-app.use(morgan('dev'));
+app.use(morgan("dev"));
+
+app.get("/", async (req, res) => {
+  res.render("index.ejs");
+});
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);

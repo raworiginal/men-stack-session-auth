@@ -13,6 +13,7 @@ const port = process.env.PORT ? process.env.PORT : "3000";
 const MongoStore = require("connect-mongo");
 mongoose.connect(process.env.MONGODB_URI);
 const isSignedIn = require("./middleware/is-signed-in.js");
+const passUserToView = require("./middleware/pass-user-to-view.js");
 
 mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
@@ -36,10 +37,10 @@ app.use(
   })
 );
 
+app.use(passUserToView);
+
 app.get("/", async (req, res) => {
-  res.render("index.ejs", {
-    user: req.session.user,
-  });
+  res.render("index.ejs");
 });
 
 app.use("/auth", authController);

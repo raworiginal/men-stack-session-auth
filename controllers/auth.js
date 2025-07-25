@@ -1,8 +1,10 @@
+/* ================== Dependencies ================== */
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user.js");
 const bcrypt = require("bcrypt");
 
+/* ================== Sign-Up ================== */
 router.get("/sign-up", (req, res) => {
   res.render("auth/sign-up.ejs");
 });
@@ -30,6 +32,7 @@ router.post("/sign-up", async (req, res) => {
   });
 });
 
+/* ================== Sign-In ================== */
 router.get("/sign-in", (req, res) => {
   res.render("auth/sign-in.ejs");
 });
@@ -53,10 +56,12 @@ router.post("/sign-in", async (req, res) => {
   });
 });
 
+/* ================== Sign-Out ================== */
 router.get("/sign-out", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/");
   });
 });
 
+/* ================== Export ================== */
 module.exports = router;
